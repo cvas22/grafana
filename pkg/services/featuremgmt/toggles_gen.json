@@ -4719,14 +4719,14 @@
     {
       "metadata": {
         "name": "logs.enableTimeMachine",
-        "resourceVersion": "1794868764329",
+        "resourceVersion": "1794871243020",
         "creationTimestamp": "2026-11-16T20:54:21Z",
         "annotations": {
-          "grafana.app/updatedTimestamp": "2026-11-16 22:39:24.329326217 +0000 UTC"
+          "grafana.app/updatedTimestamp": "2026-11-16 23:20:43.020545615 +0000 UTC"
         }
       },
       "spec": {
-        "description": "Shows an indicator on log lines retrieved via Adaptive Logs Time Machine",
+        "description": "Enables multiple points of integration for Adaptive Logs Time Machine.",
         "stage": "experimental",
         "codeowner": "@grafana/adaptive-telemetry",
         "frontend": true,

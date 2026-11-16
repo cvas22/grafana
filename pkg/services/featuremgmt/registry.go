@@ -1941,7 +1941,7 @@ var (
 		},
 		{
 			Name:        "logs.enableTimeMachine",
-			Description: "Shows an indicator on log lines retrieved via Adaptive Logs Time Machine",
+			Description: "Enables multiple points of integration for Adaptive Logs Time Machine.",
 			Stage:       FeatureStageExperimental,
 			Generate:    Generate{React: true}, // OFREP/goff-only, no legacy toggle
 			Owner:       grafanaAdaptiveTelemetrySquad,
