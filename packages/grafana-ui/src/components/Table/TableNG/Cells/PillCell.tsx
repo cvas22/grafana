@@ -136,16 +136,19 @@ function createPillColorResolver(
       return onBackground(schemeScale(Number(rawValue)).color);
     }
 
-    if (cfg.color?.mode === FieldColorModeId.PaletteClassicByName) {
-      return getTagColorsFromName(field.name, theme);
-    }
+    if (theme.flags.visualDesignRefresh) {
+      if (cfg.color?.mode === FieldColorModeId.PaletteClassicByName) {
+        return getTagColorsFromName(field.name, theme);
+      }
 
-    if (cfg.color?.mode === FieldColorModeId.PaletteClassic || cfg.color?.mode === FieldColorModeId.Thresholds) {
-      return getTagColorsFromName(value, theme);
+      if (cfg.color?.mode === FieldColorModeId.PaletteClassic || cfg.color?.mode === FieldColorModeId.Thresholds) {
+        return getTagColorsFromName(value, theme);
+      }
     }
 
     if (palette?.length) {
-      return onBackground(getColorByStringHash(palette, value));
+      const colorName = mode?.useSeriesName ? field.name : value;
+      return onBackground(getColorByStringHash(palette, colorName));
     }
 
     if (field.type === FieldType.enum && display.color) {
