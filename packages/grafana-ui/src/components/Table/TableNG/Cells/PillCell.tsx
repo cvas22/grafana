@@ -124,10 +124,11 @@ function createPillColorResolver(
       : { background, text: getTextColorForBackground(background) };
   const mode = cfg.color && getFieldColorModeForField(field);
   const hasMappings = Boolean(cfg.mappings?.length);
-  const schemeScale =
-    mode?.isByValue && mode.id !== FieldColorModeId.Thresholds ? getScaleCalculator(field, theme) : undefined;
-  const thresholdScale =
-    !hasMappings && mode?.id === FieldColorModeId.Thresholds ? getScaleCalculator(field, theme) : undefined;
+  const usesSchemeScale = mode?.isByValue && mode.id !== FieldColorModeId.Thresholds;
+  const usesThresholdScale = !hasMappings && mode?.id === FieldColorModeId.Thresholds;
+  const scaleField = usesSchemeScale || usesThresholdScale ? getPillScaleField(field) : field;
+  const schemeScale = usesSchemeScale ? getScaleCalculator(scaleField, theme) : undefined;
+  const thresholdScale = usesThresholdScale ? getScaleCalculator(scaleField, theme) : undefined;
   const palette = getFieldColorPalette(field, theme);
   const mappingColors = hasMappings ? new Map<unknown, string | undefined>() : undefined;
 
@@ -180,6 +181,28 @@ function createPillColorResolver(
     }
 
     return resolveBaseColor(rawValue, display, value);
+  };
+}
+
+function getPillScaleField(field: Field): Field {
+  if (field.type === FieldType.number) {
+    return field;
+  }
+
+  const values: number[] = [];
+  for (const value of field.values) {
+    for (const pill of inferPills(value)) {
+      if (isNumeric(pill)) {
+        values.push(Number(pill));
+      }
+    }
+  }
+
+  return {
+    ...field,
+    type: FieldType.number,
+    values,
+    state: field.state ? { ...field.state, range: undefined } : undefined,
   };
 }
 
