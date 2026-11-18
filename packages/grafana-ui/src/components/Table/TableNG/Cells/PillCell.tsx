@@ -136,6 +136,14 @@ function createPillColorResolver(
       return onBackground(schemeScale(Number(rawValue)).color);
     }
 
+    if (cfg.color?.mode === FieldColorModeId.PaletteClassicByName) {
+      return getTagColorsFromName(field.name, theme);
+    }
+
+    if (cfg.color?.mode === FieldColorModeId.PaletteClassic || cfg.color?.mode === FieldColorModeId.Thresholds) {
+      return getTagColorsFromName(value, theme);
+    }
+
     if (palette?.length) {
       return onBackground(getColorByStringHash(palette, value));
     }
@@ -145,8 +153,7 @@ function createPillColorResolver(
     }
 
     if (theme.flags.visualDesignRefresh) {
-      const { background, text } = getTagColorsFromName(value, theme);
-      return { background, text };
+      return getTagColorsFromName(value, theme);
     }
 
     return onBackground(getColorByStringHash(classicColors, value));
